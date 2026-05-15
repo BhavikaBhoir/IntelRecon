@@ -181,7 +181,7 @@ This project is licensed under the **MIT License** — feel free to use, modify 
 
 <div align="center">
 
-Made with ❤️ by **Bhavika Bhoir** & **Samyak Jadhav**
+Made by **Bhavika Bhoir** & **Samyak Jadhav**
 
 ⭐ Star this repo if you found it useful!
 
