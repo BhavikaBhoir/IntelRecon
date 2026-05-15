@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IntelRecon — Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <div class="login-wrap">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="#00ffe0" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <circle cx="24" cy="24" r="12" stroke="#00ffe0" stroke-width="1"/>
+          <circle cx="24" cy="24" r="4" fill="#00ffe0"/>
+          <line x1="24" y1="4" x2="24" y2="10" stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="24" y1="38" x2="24" y2="44" stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="4"  y1="24" x2="10" y2="24" stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="38" y1="24" x2="44" y2="24" stroke="#00ffe0" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h1>IntelRecon</h1>
+      <p class="tagline">OSINT &amp; Reconnaissance Toolkit v2.0</p>
+    </div>
+
+    <div class="login-card">
+      <div class="card-header">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="card-title">ANALYST AUTHENTICATION</span>
+      </div>
+
+      {% if error %}
+      <div class="error-banner">⚠ &nbsp;{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/login" autocomplete="off">
+        <div class="field">
+          <label>USERNAME</label>
+          <div class="input-wrap">
+            <span class="prefix">&gt;</span>
+            <input type="text" name="username" placeholder="analyst_id" required autofocus/>
+          </div>
+        </div>
+        <div class="field">
+          <label>PASSWORD</label>
+          <div class="input-wrap">
+            <span class="prefix">#</span>
+            <input type="password" name="password" placeholder="••••••••" required/>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>AUTHENTICATE</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+
+      <div class="hint-box">
+        <div class="hint-row"><code>admin</code><span>/</span><code>admin123</code></div>
+        <div class="hint-row"><code>analyst</code><span>/</span><code>analyst123</code></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

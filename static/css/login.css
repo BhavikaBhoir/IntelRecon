@@ -1,0 +1,62 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050c10;--surface:#0a141a;--border:#0d2a30;--border2:#1a3a44;
+  --accent:#00ffe0;--accent2:#00b4d8;--red:#ff4560;--text:#c8e6ea;--muted:#4a7880;
+  --font-mono:'Share Tech Mono',monospace;--font-ui:'Rajdhani',sans-serif;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-ui);overflow:hidden}
+
+.grid-bg{position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(0,255,224,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,224,.04) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none}
+.scanline{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px)}
+
+.login-wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2rem;padding:2rem}
+
+.logo-area{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.logo-icon{width:60px;height:60px;animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-area h1{font-family:var(--font-ui);font-size:2rem;font-weight:700;letter-spacing:.25em;
+  color:var(--accent);text-shadow:0 0 20px rgba(0,255,224,.5)}
+.tagline{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.15em}
+
+.login-card{width:100%;max-width:420px;background:var(--surface);
+  border:1px solid var(--border);border-top:2px solid var(--accent);border-radius:4px;
+  overflow:hidden;box-shadow:0 0 40px rgba(0,255,224,.08),0 20px 60px rgba(0,0,0,.6)}
+
+.card-header{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;
+  background:rgba(0,255,224,.03);border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot.red{background:#ff4560}.dot.yellow{background:#f5a623}.dot.green{background:#00e676}
+.card-title{font-family:var(--font-mono);font-size:.68rem;color:var(--muted);letter-spacing:.2em;margin-left:auto}
+
+.error-banner{background:rgba(255,69,96,.1);border-left:3px solid var(--red);
+  padding:.6rem 1rem;font-family:var(--font-mono);font-size:.8rem;color:var(--red)}
+
+form{padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label{font-family:var(--font-mono);font-size:.68rem;color:var(--accent);letter-spacing:.2em}
+
+.input-wrap{display:flex;align-items:center;background:rgba(0,0,0,.3);
+  border:1px solid var(--border);border-radius:3px;overflow:hidden;transition:border-color .2s}
+.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 1px rgba(0,255,224,.2)}
+.prefix{padding:0 .75rem;font-family:var(--font-mono);color:var(--accent);font-size:.9rem;
+  border-right:1px solid var(--border);background:rgba(0,255,224,.04);height:42px;display:flex;align-items:center}
+input{flex:1;background:transparent;border:none;outline:none;padding:0 .75rem;
+  color:var(--text);font-family:var(--font-mono);font-size:.88rem;height:42px}
+input::placeholder{color:var(--muted)}
+
+.login-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;
+  background:linear-gradient(90deg,#00b4d8,#00ffe0);border:none;border-radius:3px;
+  padding:.75rem;color:#050c10;font-family:var(--font-ui);font-weight:700;font-size:.9rem;
+  letter-spacing:.2em;cursor:pointer;transition:opacity .2s,box-shadow .2s}
+.login-btn svg{width:18px;height:18px}
+.login-btn:hover{opacity:.9;box-shadow:0 0 20px rgba(0,255,224,.4)}
+
+.hint-box{display:flex;justify-content:center;gap:1.5rem;padding:.75rem 1rem 1.2rem;
+  border-top:1px solid var(--border);background:rgba(0,255,224,.02)}
+.hint-row{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+.hint-row code{color:var(--accent2);background:rgba(0,180,216,.08);padding:.1rem .35rem;border-radius:2px}
+.hint-row span{color:var(--border2)}

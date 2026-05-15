@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IntelRecon — Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════════════════ -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="13" stroke="#00ffe0" stroke-width="1.2" stroke-dasharray="3 1.5"/>
+          <circle cx="16" cy="16" r="7"  stroke="#00ffe0" stroke-width="1"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00ffe0"/>
+          <line x1="16" y1="3"  x2="16" y2="7"  stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="16" y1="25" x2="16" y2="29" stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="3"  y1="16" x2="7"  y2="16" stroke="#00ffe0" stroke-width="1.5"/>
+          <line x1="25" y1="16" x2="29" y2="16" stroke="#00ffe0" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="brand-name">IntelRecon</span>
+      <span class="version-tag">v2.0</span>
+    </div>
+
+    <div class="nav-links">
+      <button class="nav-link active" data-section="dashboard">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zm8-8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-link" data-section="history">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        History
+        <span class="nav-badge" id="historyCount">0</span>
+      </button>
+      <button class="nav-link" data-section="tools">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        Tools
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="status-badge"><span class="status-dot"></span>LIVE</div>
+      <div class="user-chip">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+        {{ user }}
+      </div>
+      <a href="/logout" class="logout-btn">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h7a1 1 0 100-2H4V5h6a1 1 0 100-2H3zm14.293 4.293a1 1 0 011.414 1.414L16.414 11H10a1 1 0 110-2h6.414l-2.121-2.121a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ══════════════════════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ─── SECTION: DASHBOARD ──────────────────────────────────────── -->
+    <section id="sec-dashboard" class="page-section active">
+
+      <!-- Search -->
+      <div class="search-section">
+        <div class="search-label">TARGET INVESTIGATION</div>
+        <div class="search-bar">
+          <div class="search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </div>
+          <input id="targetInput" type="text" placeholder="Enter domain or IP  —  e.g. github.com  /  8.8.8.8" autocomplete="off"/>
+          <button id="investigateBtn" class="investigate-btn">
+            <span id="btnText">INVESTIGATE</span>
+            <div id="btnLoader" class="btn-loader hidden"></div>
+          </button>
+        </div>
+        <div class="search-tags">
+          <span class="tag tag-safe"  onclick="quickSearch('google.com')">✓ google.com</span>
+          <span class="tag tag-safe"  onclick="quickSearch('github.com')">✓ github.com</span>
+          <span class="tag tag-safe"  onclick="quickSearch('cloudflare.com')">✓ cloudflare.com</span>
+          <span class="tag tag-safe"  onclick="quickSearch('8.8.8.8')">✓ 8.8.8.8</span>
+          <span class="tag tag-risky" onclick="quickSearch('login-paypal-secure.tk')">⚠ login-paypal-secure.tk</span>
+          <span class="tag tag-risky" onclick="quickSearch('free-v-bucks-generator.xyz')">⚠ free-v-bucks-generator.xyz</span>
+          <span class="tag tag-risky" onclick="quickSearch('amazon-security-alert.xyz')">⚠ amazon-security-alert.xyz</span>
+          <span class="tag tag-risky" onclick="quickSearch('netflix-account-verify.tk')">⚠ netflix-account-verify.tk</span>
+        </div>
+      </div>
+
+      <!-- Placeholder -->
+      <div id="placeholderState" class="placeholder-state">
+        <div class="ph-icon">
+          <svg viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="36" stroke="#00ffe040" stroke-width="1" stroke-dasharray="5 3"/>
+            <circle cx="40" cy="40" r="22" stroke="#00ffe030" stroke-width="1"/>
+            <circle cx="40" cy="40" r="8"  stroke="#00ffe060" stroke-width="1.5"/>
+            <circle cx="40" cy="40" r="3"  fill="#00ffe0"/>
+            <line x1="40" y1="4"  x2="40" y2="14" stroke="#00ffe040" stroke-width="1.5"/>
+            <line x1="40" y1="66" x2="40" y2="76" stroke="#00ffe040" stroke-width="1.5"/>
+            <line x1="4"  y1="40" x2="14" y2="40" stroke="#00ffe040" stroke-width="1.5"/>
+            <line x1="66" y1="40" x2="76" y2="40" stroke="#00ffe040" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h2>Awaiting Target</h2>
+        <p>Enter a domain or IP above — or click a sample target to begin</p>
+        <div class="ph-features">
+          <div class="ph-feat">WHOIS</div><div class="ph-feat">DNS</div>
+          <div class="ph-feat">SSL</div><div class="ph-feat">GEO</div>
+          <div class="ph-feat">REPUTATION</div><div class="ph-feat">SUBDOMAINS</div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="resultsArea" class="hidden">
+        <!-- Summary -->
+        <div class="summary-row">
+          <div class="summary-card">
+            <div class="sum-label">TARGET</div>
+            <div class="sum-value mono" id="sumTargetVal">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sum-label">RESOLVED IP</div>
+            <div class="sum-value mono" id="sumIPVal">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sum-label">SSL STATUS</div>
+            <div class="sum-value" id="sumSSLVal">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sum-label">VERDICT</div>
+            <div class="sum-value" id="sumVerdictVal">—</div>
+          </div>
+          <div class="summary-card risk-card">
+            <div class="sum-label">RISK SCORE</div>
+            <div class="sum-value risk-val" id="sumRisk">—</div>
+            <div class="risk-bar-wrap"><div class="risk-bar" id="riskBar"></div></div>
+          </div>
+        </div>
+
+        <!-- Report button -->
+        <div class="report-bar">
+          <button id="downloadPDF" class="pdf-btn">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"/></svg>
+            Download PDF Report
+          </button>
+          <span class="report-ts" id="reportTimestamp"></span>
+        </div>
+
+        <!-- Cards -->
+        <div class="cards-grid">
+          <div class="intel-card" id="reputationCard">
+            <div class="card-hdr"><div class="card-icon rep-icon">R</div><span>REPUTATION & THREATS</span><div class="card-tag">INTEL</div></div>
+            <div class="card-body" id="repBody"></div>
+          </div>
+          <div class="intel-card" id="whoisCard">
+            <div class="card-hdr"><div class="card-icon whois-icon">W</div><span>WHOIS INTELLIGENCE</span><div class="card-tag">REGISTRY</div></div>
+            <div class="card-body" id="whoisBody"></div>
+          </div>
+          <div class="intel-card" id="sslCard">
+            <div class="card-hdr"><div class="card-icon ssl-icon">S</div><span>SSL CERTIFICATE</span><div class="card-tag">SECURITY</div></div>
+            <div class="card-body" id="sslBody"></div>
+          </div>
+          <div class="intel-card" id="ipCard">
+            <div class="card-hdr"><div class="card-icon ip-icon">I</div><span>IP INTELLIGENCE</span><div class="card-tag">GEO</div></div>
+            <div class="card-body" id="ipBody"></div>
+          </div>
+          <div class="intel-card" id="dnsCard">
+            <div class="card-hdr"><div class="card-icon dns-icon">D</div><span>DNS ANALYSIS</span><div class="card-tag">RECORDS</div></div>
+            <div class="card-body" id="dnsBody"></div>
+          </div>
+          <div class="intel-card" id="chartCard">
+            <div class="card-hdr"><div class="card-icon chart-icon">T</div><span>THREAT INDICATORS</span><div class="card-tag">CHART</div></div>
+            <div class="card-body chart-body"><canvas id="riskChart"></canvas></div>
+          </div>
+          <div class="intel-card wide-card" id="subCard">
+            <div class="card-hdr"><div class="card-icon sub-icon">E</div><span>SUBDOMAIN ENUMERATION</span><div class="card-tag">RECON</div></div>
+            <div class="card-body" id="subBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SECTION: HISTORY ─────────────────────────────────────────── -->
+    <section id="sec-history" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Investigation History</h2>
+          <p class="section-sub">All reconnaissance sessions from this login</p>
+        </div>
+        <button id="clearHistoryBtn" class="danger-btn">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          Clear History
+        </button>
+      </div>
+      <div id="historyTable" class="history-wrap">
+        <div class="empty-state">
+          <p>No investigations yet. Run a scan from the Dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SECTION: TOOLS ───────────────────────────────────────────── -->
+    <section id="sec-tools" class="page-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Intelligence Tools & Domain Database</h2>
+          <p class="section-sub">Curated safe domains and known threat domains for testing</p>
+        </div>
+      </div>
+
+      <div class="tools-grid">
+        <!-- Quick Actions -->
+        <div class="tool-card full-width">
+          <div class="tool-card-hdr">
+            <div class="card-icon chart-icon">Q</div>
+            <span>QUICK INVESTIGATION</span>
+          </div>
+          <div class="tool-card-body">
+            <p class="tool-desc">Click any domain below to instantly run an investigation from the dashboard.</p>
+            <div class="quick-actions">
+              <button class="qa-btn safe" onclick="goDashboard('google.com')">google.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('github.com')">github.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('cloudflare.com')">cloudflare.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('microsoft.com')">microsoft.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('amazon.com')">amazon.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('apple.com')">apple.com</button>
+              <button class="qa-btn safe" onclick="goDashboard('wikipedia.org')">wikipedia.org</button>
+              <button class="qa-btn safe" onclick="goDashboard('python.org')">python.org</button>
+              <button class="qa-btn ip"   onclick="goDashboard('8.8.8.8')">8.8.8.8 (Google DNS)</button>
+              <button class="qa-btn ip"   onclick="goDashboard('1.1.1.1')">1.1.1.1 (Cloudflare)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safe Domains -->
+        <div class="tool-card">
+          <div class="tool-card-hdr">
+            <div class="card-icon dns-icon">✓</div>
+            <span>TRUSTED DOMAINS</span>
+            <div class="card-tag">SAFE</div>
+          </div>
+          <div class="tool-card-body" id="safeDomainsList">
+            <div class="loading-msg">Loading...</div>
+          </div>
+        </div>
+
+        <!-- Risky Domains -->
+        <div class="tool-card">
+          <div class="tool-card-hdr">
+            <div class="card-icon rep-icon">⚠</div>
+            <span>THREAT DOMAIN DATABASE</span>
+            <div class="card-tag">RISKY</div>
+          </div>
+          <div class="tool-card-body" id="riskyDomainsList">
+            <div class="loading-msg">Loading...</div>
+          </div>
+        </div>
+
+        <!-- API Reference -->
+        <div class="tool-card">
+          <div class="tool-card-hdr">
+            <div class="card-icon whois-icon">A</div>
+            <span>API REFERENCE</span>
+            <div class="card-tag">ENDPOINTS</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="api-row"><span class="api-method post">POST</span><span class="api-path">/investigate</span><span class="api-desc">Run full OSINT scan</span></div>
+            <div class="api-row"><span class="api-method get">GET</span><span class="api-path">/history</span><span class="api-desc">Fetch scan history</span></div>
+            <div class="api-row"><span class="api-method post">POST</span><span class="api-path">/report/pdf</span><span class="api-desc">Generate PDF report</span></div>
+            <div class="api-row"><span class="api-method get">GET</span><span class="api-path">/tools-list</span><span class="api-desc">Domain database</span></div>
+            <div class="api-row"><span class="api-method post">POST</span><span class="api-path">/history/clear</span><span class="api-desc">Clear all history</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
